@@ -1,16 +1,21 @@
 package main
 
+
 import (
-  "github.com/gofiber/fiber/v2"
+  "net/http"
+  "github.com/gin-gonic/gin"
   "github.com/Gridmax/Fader/utility/configload"
 )
 
 func main() {
-    app := fiber.New()
-    config, err := configload.LoadConfig("config.yaml")
-    app.Get("/", func(c *fiber.Ctx) error {
-        return c.JSON(&fiber.Map{"data": "Hello from Fiber & mongoDB"})
-    })
+  r := gin.Default()
 
-    app.Listen(":"+config.ServicePort)
+  config, _ := configload.LoadConfig("config.yaml")
+
+  r.GET("/", func(c *gin.Context) {
+    c.JSON(http.StatusOK, gin.H{"data": "hello world"})    
+  })
+
+  r.Run(":"+config.ServicePort)
 }
+
